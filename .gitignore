@@ -1,6 +1,6 @@
-build
-out
-.cache
-.idea
-.vs
-.vscode
+Code/build
+Code/out
+Code/.cache
+Code/.idea
+Code/.vs
+Code/.vscode
