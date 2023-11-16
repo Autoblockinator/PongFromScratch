@@ -1,37 +1,46 @@
 #pragma once
 #include <vector>
+#include <string>
+#include <utils.h>
 
 class Node
 {
 public:
     Node()
     {
+        root = this;
         parent = nullptr;
         children = std::vector<Node*>();
-        root = nullptr;
+    }
+
+    Node(Node* parent)
+    {
+        root = parent->getRoot();
+        this->parent = parent;
+        children = std::vector<Node*>();
     }
 
     Node* getParent() { return parent; }
 
-    Node* setParent(Node* new_parent)
+    Node* setParent(Node* parent)
     {
-        parent = new_parent;
-        if (parent == nullptr) { root = parent; return parent; }
+        this->parent = parent;
+        if (this->parent == nullptr) { root = this->parent; return this->parent; }
 
         Node* old_root = root;
         if (findRoot() != old_root) { ready(); }
         
-        return parent;
+        return this->parent;
     }
 
-    Node* setParentSameTree(Node* new_parent) { parent = new_parent; return parent; }
+    Node* setParentSameTree(Node* parent) { this->parent = parent; return this->parent; }
 
-    Node* addChild(Node* new_child)
+    Node* addChild(Node* child)
     {
-        if (new_child == nullptr) { return nullptr; }
-        children.push_back(new_child);
-        new_child->setParent(this);
-        return new_child;
+        if (child == nullptr) { return nullptr; }
+        children.push_back(child);
+        child->setParent(this);
+        return child;
     }
 
     Node* getRoot()
@@ -46,15 +55,21 @@ public:
 
     Node* findRoot() { root = nullptr; return getRoot(); }
 
-    Node* findNode(const char* path)
+    Node* findNode(std::vector<std::string>* path)
     {
         return nullptr;
     }
 
+    Node* findNode(std::string* path)
+    {
+        return findNode(&utils::string::split());
+    }
+
 protected:
+    std::string name;
+    Node* root;
     Node* parent;
     std::vector<Node*> children;
-    Node* root;
 
     void ready() {} // Called when the root node is changed.
 };

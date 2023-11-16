@@ -1,6 +1,5 @@
 #include <SFML/Graphics.hpp>
-#include <iostream>
-
+// #include <iostream>
 #include "node.cpp"
 
 int main()
