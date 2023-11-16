@@ -1,0 +1,39 @@
+#!/usr/bin/python
+# Validate User Input
+from sys import argv
+if len(argv) not in range(2,3+1): print('usage: auto/new {SourceFileName} {Optional|TemplateName}'); exit(1)
+
+# Imports
+from os import path, listdir
+
+# Utilities
+lsdirs = lambda frompath: [d if path.isdir(d) else None for d in listdir(frompath)]
+lsfiles = lambda frompath: [f if path.isfile(f) else None for f in listdir(frompath)]
+def concat(ls):
+    out = ''
+    for i in ls: out += i+'\n'
+    return out[:-1]
+
+# Variables
+root = path.abspath(path.join(__file__,'../..'))
+filename = argv[1]
+templatename = 'default'
+if len(argv) == 3:
+    if argv[2] in lsdirs(path.join(root, 'templates')):
+        templatename = argv[2]
+
+# Main
+for i in (
+    {'directory': 'src', 'extention': '.cpp', 'template': 'source'},
+    {'directory': 'hdr', 'extention': '.hpp', 'template': 'header'},
+):
+    class current:
+        filename = filename+i['extention']
+        dir = path.join(root, i['directory'])
+        templatepath = path.join(root, 'templates', templatename, i['template']+'.txt')
+    
+    if current.filename in lsfiles(current.dir): continue
+    
+    with open(path.join(current.dir, current.filename), 'w') as file:
+        with open(current.templatepath, 'r') as template:
+            file.write(template.read())
