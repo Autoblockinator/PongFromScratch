@@ -15,11 +15,16 @@ public:
 
     Node* setParent(Node* new_parent)
     {
-        Node* old_root = getRoot();
         parent = new_parent;
-        if (getRoot() != old_root) { ready(); }
-        return new_parent;
+        if (parent == nullptr) { root = parent; return parent; }
+
+        Node* old_root = root;
+        if (findRoot() != old_root) { ready(); }
+        
+        return parent;
     }
+
+    Node* setParentSameTree(Node* new_parent) { parent = new_parent; return parent; }
 
     Node* addChild(Node* new_child)
     {
@@ -31,13 +36,15 @@ public:
 
     Node* getRoot()
     {
-        if (root != nullptr) { return root;}
+        if (root != nullptr) { return root; }
         if (parent == nullptr) { root = this; return root; }
         Node* new_root = parent;
         while (new_root->parent != nullptr) { new_root = new_root->parent; }
         root = new_root;
         return root;
     }
+
+    Node* findRoot() { root = nullptr; return getRoot(); }
 
     Node* findNode(const char* path)
     {
