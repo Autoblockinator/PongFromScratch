@@ -1,8 +1,9 @@
 #include <SFML/Graphics.hpp>
+#include "../hdr/paddle.hpp"
 
 int main()
 {
-    auto window = sf::RenderWindow{ { 1920u, 1080u }, "CMake SFML Project" };
+    auto window = sf::RenderWindow{ { 1920u, 1080u }, "Pong" };
     window.setFramerateLimit(144);
 
     while (window.isOpen())
@@ -18,4 +19,6 @@ int main()
         window.clear();
         window.display();
     }
+
+    return 0;
 }

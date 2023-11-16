@@ -10,7 +10,9 @@ FetchContent_Declare(SFML
     GIT_TAG 2.6.x)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(Pong src/main.cpp)
+add_executable(Pong
+    src/main.cpp
+)
 target_link_libraries(Pong PRIVATE sfml-graphics)
 target_compile_features(Pong PRIVATE cxx_std_17)
 
