@@ -1,5 +1,4 @@
 #include <SFML/Graphics.hpp>
-#include "../hdr/paddle.hpp"
 
 int main()
 {
