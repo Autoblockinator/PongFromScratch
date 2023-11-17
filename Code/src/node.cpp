@@ -1,23 +1,38 @@
-#pragma once
 #include <vector>
+#ifndef Vector
+#define Vector std::vector
+#endif
+
 #include <string>
-#include <utils.h>
+#ifndef String
+#define String std::string
+#endif
 
 class Node
 {
 public:
     Node()
     {
+        name = String("");
         root = this;
         parent = nullptr;
-        children = std::vector<Node*>();
+        children = Vector<Node>();
     }
 
-    Node(Node* parent)
+    Node(String name)
     {
-        root = parent->getRoot();
-        this->parent = parent;
-        children = std::vector<Node*>();
+        this->name = name;
+        root = this;
+        parent = nullptr;
+        children = Vector<Node>();
+    }
+
+    Node(String name, Vector<Node> children)
+    {
+        this->name = name;
+        root = this;
+        parent = nullptr;
+        this->children = children;
     }
 
     Node* getParent() { return parent; }
@@ -35,12 +50,28 @@ public:
 
     Node* setParentSameTree(Node* parent) { this->parent = parent; return this->parent; }
 
+    Node* addChild(Node child)
+    {
+        children.push_back(child);
+        if (child.parent != nullptr) { child.parent->removeChild(child); }
+        child.setParent(this);
+        return &children.back();
+    }
+
     Node* addChild(Node* child)
     {
         if (child == nullptr) { return nullptr; }
-        children.push_back(child);
+        children.push_back(*child);
         child->setParent(this);
         return child;
+    }
+
+    void removeChild(Node child)
+    {
+        for (auto i = children.begin(); i <= children.end(); i += 1)
+        {
+
+        }
     }
 
     Node* getRoot()
@@ -55,21 +86,21 @@ public:
 
     Node* findRoot() { root = nullptr; return getRoot(); }
 
-    Node* findNode(std::vector<std::string>* path)
+    Node* findNode(Vector<String>* path)
     {
         return nullptr;
     }
 
-    Node* findNode(std::string* path)
-    {
-        return findNode(&utils::string::split());
-    }
+    // Node* findNode(String* path)
+    // {
+    //     return findNode(&utils::string::split());
+    // }
 
 protected:
-    std::string name;
+    String name;
     Node* root;
     Node* parent;
-    std::vector<Node*> children;
+    Vector<Node> children;
 
     void ready() {} // Called when the root node is changed.
 };

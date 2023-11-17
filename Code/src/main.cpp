@@ -1,14 +1,14 @@
 #include <SFML/Graphics.hpp>
 // #include <iostream>
-#include "node.cpp"
+#include <node.h>
+#include <memory>
 
 int main()
 {
     auto window = sf::RenderWindow{{1920, 1080}, "Pong"};
     window.setFramerateLimit(144);
 
-    Node root;
-    Node child;
+    auto root = std::make_unique<Node>("Root");
 
     while (true)
     {
@@ -24,6 +24,11 @@ int main()
         rect.setPosition({50, 50});
         rect.setFillColor(sf::Color::White);
         window.draw(rect);
+
+        auto rect2 = sf::RectangleShape({20,100});
+        rect2.setPosition({static_cast<float>(window.getSize().x-(50+20)), 50});
+        rect2.setFillColor(sf::Color::White);
+        window.draw(rect2);
 
         window.display();
     }
