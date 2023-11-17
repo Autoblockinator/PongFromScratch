@@ -3,31 +3,15 @@
 class Node
 {
 public:
-    Node()
-    {
-        name = String();
-        self = SharedPtr<Node>(this);
-        root = self;
-        parent = WeakPtr<Node>();
-        children = Vector<SharedPtr<Node>>();
-    }
+    Node() { constructDefaults(); }
 
-    Node(String name)
-    {
-        this->name = name;
-        self = SharedPtr<Node>(this);
-        root = self;
-        parent = WeakPtr<Node>();
-        children = Vector<SharedPtr<Node>>();
-    }
+    Node(String name) { constructDefaults(); this->setName(name); }
 
     Node(String name, Vector<SharedPtr<Node>> children)
     {
-        this->name = name;
-        self = SharedPtr<Node>(this);
-        root = self;
-        parent = WeakPtr<Node>();
-        this->children = children;
+        constructDefaults();
+        this->setName(name);
+        this->addChildren(children);
     }
 
     WeakPtr<Node> getParent() { return parent; }
@@ -53,7 +37,16 @@ public:
         return children.back();
     }
     WeakPtr<Node> addChild(Node &child) { return addChild(makeShared<Node>(child)); }
+    Vector<WeakPtr<Node>> addChildren(Vector<SharedPtr<Node>> children)
+    {
+        Vector<WeakPtr<Node>> out;
+        for (int i = 0; i < children.size(); i++) { this->addChild(children[i]); out.push_back(children[i]); }
+        return out;
+    }
+    Vector<WeakPtr<Node>> addChildren(Vector<WeakPtr<Node>> children)
+    { for (int i = 0; i < children.size(); i++) { this->addChild(children[i].lock()); } return children; }
 
+    // Remove a child node.
     SharedPtr<Node> removeChild(int child)
     {
         auto out = children[child];
@@ -77,20 +70,28 @@ public:
     // Get a child node.
     WeakPtr<Node> getChild(int index)
     {
-        if ( index >= children.size()) { return WeakPtr<Node>(); }
-        return children[index];
-    }
-    WeakPtr<Node> getChild(String name)
-    {
-        for (uint i = 0; i < children.size(); i++) { if (children[i]->name == name) { return children[i]; } }
+        if ( index >= 0 && index < children.size()) { return children[index]; }
         return WeakPtr<Node>();
     }
+    WeakPtr<Node> getChild(String name) { return getChild(getChildIndex(name)); }
+    int getChildIndex(String name)
+    {
+        for (int i = 0; i < children.size(); i++) { if (children[i]->name == name) { return i; } }
+        return -1;
+    }
 
-    // Node* findNode(Vector<String>* path)
+    // Node* getNode(Vector<String>* path)
     // {
     //     auto var = makeShared<String>("Hello World!");
     //     return nullptr;
     // }
+
+    String getName() { return name; }
+    String setName(String name)
+    {
+        this->name = name;
+        return this->name;
+    }
 
 protected:
     String name;
@@ -98,6 +99,15 @@ protected:
     WeakPtr<Node> root;
     WeakPtr<Node> parent;
     Vector<SharedPtr<Node>> children;
+
+    void constructDefaults()
+    {
+        name = "Node";
+        self = makeShared<Node>(*this);
+        root = self;
+        parent = WeakPtr<Node>();
+        children = Vector<SharedPtr<Node>>();
+    }
 
     void ready() {} // Called when the root node is changed.
 };

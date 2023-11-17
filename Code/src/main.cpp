@@ -7,8 +7,12 @@ int main()
     auto window = sf::RenderWindow{{1920, 1080}, "Pong"};
     window.setFramerateLimit(144);
 
-    auto root = makeShared<Node>("Root");
-    WeakPtr<Node> weak = root;
+    auto root = makeShared<Node>("Root", Vector<SharedPtr<Node>>({
+        makeShared<Node>("Child")
+    }));
+
+    log("Root Name: " << root->getName());
+    log("Child Name: " << root->getChild(0).lock()->getName());
 
     while (true)
     {
