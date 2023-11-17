@@ -1,0 +1,2 @@
+g++ experiments/test.cpp -o experiments/run
+experiments/run

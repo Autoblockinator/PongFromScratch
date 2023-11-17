@@ -5,70 +5,66 @@ class Node
 public:
     Node()
     {
-        name = String("");
-        root = this;
-        parent = nullptr;
-        children = Vector<Node>();
+        name = String();
+        self = SharedPtr<Node>(this);
+        root = self;
+        parent = WeakPtr<Node>();
+        children = Vector<SharedPtr<Node>>();
     }
 
     Node(String name)
     {
         this->name = name;
-        root = this;
-        parent = nullptr;
-        children = Vector<Node>();
+        self = SharedPtr<Node>(this);
+        root = self;
+        parent = WeakPtr<Node>();
+        children = Vector<SharedPtr<Node>>();
     }
 
-    Node(String name, Vector<Node> children)
+    Node(String name, Vector<SharedPtr<Node>> children)
     {
         this->name = name;
-        root = this;
-        parent = nullptr;
+        self = SharedPtr<Node>(this);
+        root = self;
+        parent = WeakPtr<Node>();
         this->children = children;
     }
 
-    Node* getParent() { return parent; }
+    WeakPtr<Node> getParent() { return parent; }
 
-    Node* setParent(Node* parent)
+    WeakPtr<Node> setParent(WeakPtr<Node> parent)
     {
         this->parent = parent;
-        if (this->parent == nullptr) { root = this->parent; return this->parent; }
+        if (this->parent.expired()) { root = self; return this->parent; }
 
-        Node* old_root = root;
-        if (findRoot() != old_root) { ready(); }
+        auto old_root = root;
+        if (findRoot().lock() != old_root.lock()) { ready(); }
         
         return this->parent;
     }
 
-    Node* setParentSameTree(Node* parent) { this->parent = parent; return this->parent; }
+    WeakPtr<Node> setParentSameTree(WeakPtr<Node> parent) { this->parent = parent; return this->parent; }
 
-    Node* addChild(Node child)
+    WeakPtr<Node> addChild(SharedPtr<Node> child)
     {
-        children.push_back(child);
-        if (child.parent != nullptr) { child.parent->removeChild(child); }
-        child.setParent(this);
-        return &children.back();
+        children.push_back(makeShared<Node>(child));
+        if (!child->parent.expired()) { child->parent.lock()->removeLastChild(); }
+        child->setParent(self);
+        return children.back();
     }
+    WeakPtr<Node> addChild(Node &child) { return addChild(makeShared<Node>(child)); }
 
-    Node* addChild(Node* child)
+    SharedPtr<Node> removeChild(int child)
     {
-        if (child == nullptr) { return nullptr; }
-        children.push_back(*child);
-        child->setParent(this);
-        return child;
+        auto out = children[child];
+        children.erase(vectorIterAt(children, child));
+        return out;
     }
+    SharedPtr<Node> removeLastChild() { return removeChild(children.size() - 1); }
 
-    void removeChild(Node child)
+    WeakPtr<Node> getRoot()
     {
-        for (auto i = children.begin(); i <= children.end(); i += 1)
-        {
-
-        }
-    }
-
-    Node* getRoot()
-    {
-        if (root != nullptr) { return root; }
+        if (!root.expired()) { return root; }
         if (parent == nullptr) { root = this; return root; }
         Node* new_root = parent;
         while (new_root->parent != nullptr) { new_root = new_root->parent; }
@@ -76,10 +72,11 @@ public:
         return root;
     }
 
-    Node* findRoot() { root = nullptr; return getRoot(); }
+    WeakPtr<Node> findRoot() { root = WeakPtr<Node>(); return getRoot(); }
 
     Node* findNode(Vector<String>* path)
     {
+        auto var = makeShared<String>("Hello World!");
         return nullptr;
     }
 
@@ -90,9 +87,10 @@ public:
 
 protected:
     String name;
-    Node* root;
-    Node* parent;
-    Vector<Node> children;
+    SharedPtr<Node> self;
+    WeakPtr<Node> root;
+    WeakPtr<Node> parent;
+    Vector<SharedPtr<Node>> children;
 
     void ready() {} // Called when the root node is changed.
 };

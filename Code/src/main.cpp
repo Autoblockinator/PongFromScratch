@@ -8,6 +8,7 @@ int main()
     window.setFramerateLimit(144);
 
     auto root = makeShared<Node>("Root");
+    WeakPtr<Node> weak = root;
 
     while (true)
     {

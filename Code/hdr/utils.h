@@ -1,26 +1,18 @@
+#pragma once
+
 #include <vector>
-#ifndef Vector
 #define Vector std::vector
-#endif
+#define vectorIterAt(vector, index) std::next(vector.begin(), index)
 
 #include <string>
-#ifndef String
 #define String std::string
-#endif
 
 #include <memory>
-#ifndef UniquePtr
 #define UniquePtr std::unique_ptr
-#endif
-#ifndef makeUnique
 #define makeUnique std::make_unique
-#endif
-#ifndef SharedPtr
 #define SharedPtr std::shared_ptr
-#endif
-#ifndef makeShared
 #define makeShared std::make_shared
-#endif
+#define WeakPtr std::weak_ptr
 
 #include <iostream>
 
