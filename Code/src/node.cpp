@@ -47,7 +47,7 @@ public:
 
     WeakPtr<Node> addChild(SharedPtr<Node> child)
     {
-        children.push_back(makeShared<Node>(child));
+        children.push_back(child);
         if (!child->parent.expired()) { child->parent.lock()->removeLastChild(); }
         child->setParent(self);
         return children.back();
@@ -62,27 +62,34 @@ public:
     }
     SharedPtr<Node> removeLastChild() { return removeChild(children.size() - 1); }
 
+    // Find & get the root node.
     WeakPtr<Node> getRoot()
     {
         if (!root.expired()) { return root; }
-        if (parent == nullptr) { root = this; return root; }
-        Node* new_root = parent;
-        while (new_root->parent != nullptr) { new_root = new_root->parent; }
+        if (parent.expired()) { root = self; return root; }
+        auto new_root = parent.lock();
+        while (!new_root->parent.expired()) { new_root = new_root->parent.lock(); }
         root = new_root;
         return root;
     }
-
     WeakPtr<Node> findRoot() { root = WeakPtr<Node>(); return getRoot(); }
 
-    Node* findNode(Vector<String>* path)
+    // Get a child node.
+    WeakPtr<Node> getChild(int index)
     {
-        auto var = makeShared<String>("Hello World!");
-        return nullptr;
+        if ( index >= children.size()) { return WeakPtr<Node>(); }
+        return children[index];
+    }
+    WeakPtr<Node> getChild(String name)
+    {
+        for (uint i = 0; i < children.size(); i++) { if (children[i]->name == name) { return children[i]; } }
+        return WeakPtr<Node>();
     }
 
-    // Node* findNode(String* path)
+    // Node* findNode(Vector<String>* path)
     // {
-    //     return findNode(&utils::string::split());
+    //     auto var = makeShared<String>("Hello World!");
+    //     return nullptr;
     // }
 
 protected:
