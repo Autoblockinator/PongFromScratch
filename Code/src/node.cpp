@@ -1,12 +1,4 @@
-#include <vector>
-#ifndef Vector
-#define Vector std::vector
-#endif
-
-#include <string>
-#ifndef String
-#define String std::string
-#endif
+#include <utils.h>
 
 class Node
 {

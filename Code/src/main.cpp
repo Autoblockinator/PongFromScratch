@@ -1,14 +1,13 @@
 #include <SFML/Graphics.hpp>
-// #include <iostream>
+#include <utils.h>
 #include <node.h>
-#include <memory>
 
 int main()
 {
     auto window = sf::RenderWindow{{1920, 1080}, "Pong"};
     window.setFramerateLimit(144);
 
-    auto root = std::make_unique<Node>("Root");
+    auto root = makeShared<Node>("Root");
 
     while (true)
     {
