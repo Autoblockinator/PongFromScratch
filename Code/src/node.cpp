@@ -5,9 +5,9 @@ class Node
 public:
     Node() { constructDefaults(); }
 
-    Node(String name) { constructDefaults(); this->setName(name); }
+    Node(const String &name) { constructDefaults(); this->setName(name); }
 
-    Node(String name, Vector<SharedPtr<Node>> children)
+    Node(const String &name, Vector<SharedPtr<Node>> children)
     {
         constructDefaults();
         this->setName(name);
@@ -36,7 +36,7 @@ public:
         child->setParent(self);
         return children.back();
     }
-    WeakPtr<Node> addChild(Node &child) { return addChild(makeShared<Node>(child)); }
+    WeakPtr<Node> addChild(Node &child) { return addChild(SharedPtr<Node>(&child)); }
     Vector<WeakPtr<Node>> addChildren(Vector<SharedPtr<Node>> children)
     {
         Vector<WeakPtr<Node>> out;
@@ -80,14 +80,9 @@ public:
         return -1;
     }
 
-    // Node* getNode(Vector<String>* path)
-    // {
-    //     auto var = makeShared<String>("Hello World!");
-    //     return nullptr;
-    // }
-
+    // Name SetGet
     String getName() { return name; }
-    String setName(String name)
+    String setName(const String &name)
     {
         this->name = name;
         return this->name;
@@ -103,11 +98,11 @@ protected:
     void constructDefaults()
     {
         name = "Node";
-        self = makeShared<Node>(*this);
+        self = SharedPtr<Node>(this);
         root = self;
         parent = WeakPtr<Node>();
         children = Vector<SharedPtr<Node>>();
     }
 
-    void ready() {} // Called when the root node is changed.
+    void ready() { log("Ready Called On Node \"" << name << "\""); } // Called when the root node is changed.
 };
