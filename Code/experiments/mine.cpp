@@ -15,11 +15,11 @@ public:
     #define DEFAULT ptr(nullptr), borrowers(Vector<CustomSmartPointer<T>*>())
     #endif
 
-    CustomSmartPointer() { constructDefault(); }
+    CustomSmartPointer(): DEFAULT {}
 
-    explicit CustomSmartPointer(T* ptr) { constructDefault(); this->ptr = ptr; }
+    explicit CustomSmartPointer(T* ptr): DEFAULT { this->ptr = ptr; }
 
-    CustomSmartPointer(const CustomSmartPointer<T>& owner) { constructDefault(); borrow(owner); }
+    CustomSmartPointer(const CustomSmartPointer<T>& owner): DEFAULT { borrow(owner); }
 
     #ifdef DEFAULT
     #undef DEFAULT
