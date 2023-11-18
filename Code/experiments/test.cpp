@@ -8,53 +8,44 @@
 #include <string>
 #define String std::string
 
-
-
 template <typename T>
 class CustomSmartPointer {
 public:
-    #ifndef DEFAULT
-    #define DEFAULT ptr(nullptr), borrowers(Vector<CustomSmartPointer<T>*>())
-    #endif
+    #define DEFAULT ptr(nullptr), owner(nullptr), borrowers(Vector<CustomSmartPointer<T>*>())
 
     CustomSmartPointer(): DEFAULT {}
 
-    // explicit CustomSmartPointer(T* ptr): DEFAULT { this->ptr = ptr; } //Untested
+    explicit CustomSmartPointer(T* ptr): DEFAULT { this->ptr = ptr; }
 
-    // CustomSmartPointer(const CustomSmartPointer<T>& owner): DEFAULT { borrow(owner); } //Untested
+    // CustomSmartPointer(CustomSmartPointer<T>& owner): DEFAULT { borrow(owner); }
 
-    #ifdef DEFAULT
     #undef DEFAULT
-    #endif
 
-    // CustomSmartPointer& operator=(const CustomSmartPointer<T>& owner) { borrow(owner); return *this; } //Untested
+    // CustomSmartPointer<T>& operator=(CustomSmartPointer<T>& owner) { borrow(owner); return *this; }
 
-    // void borrow(const CustomSmartPointer<T>& owner) { ptr = owner.ptr; owner.borrowers.push_back(this); } //Untested
+    void borrow(CustomSmartPointer<T>& owner) {
+        this->owner = &owner;
+        ptr = owner.ptr;
+        owner.borrowers.push_back(this);
+    }
 
-    // ~CustomSmartPointer() {} //Untested
+    // ~CustomSmartPointer() {}
 
-    // CustomSmartPointer<T>* getOwner() {
-    //     if (typeid(*ptr) == typeid(CustomSmartPointer<T>)) { return ptr; }
-    //     else { return nullptr; }
-    // } //Untested
+    CustomSmartPointer<T>* getOwner() { return owner; }
 
-    // T* operator->() const {
-    //     if (getOwner == nullptr) { return ptr; }
-    //     while (CustomSmartPointer<T>* i; i)
-    // } //Untested
+    T* operator->() const { return ptr; }
 
-    // T& get() const { return *ptr; } //Untested
+    T& get() const { return *ptr; }
 
-    // bool isValid() {
-    //     if ( getOwner() == nullptr) { return ptr == nullptr; }
+    bool operator==(const CustomSmartPointer<T>& other) { return ptr == other.ptr; }
+    bool operator==(nullptr_t null) { return valid(); }
 
-    // } //Untested
+    bool valid() { return ptr == nullptr; }
 
 protected:
     T* ptr;
+    CustomSmartPointer<T>* owner;
     Vector<CustomSmartPointer<T>*> borrowers;
-
-    void constructDefault() { ptr = nullptr; borrowers = Vector<CustomSmartPointer<T>*>(); }
 };
 
 
@@ -68,12 +59,16 @@ public:
 };
 
 
-
 int main() {
     TestClass var{"Hello ", "World! "};
     logLine("var: " << var.A << var.B);
 
-    CustomSmartPointer<TestClass> owner;
+    CustomSmartPointer a{&var};
+    CustomSmartPointer<TestClass> b;
+    b.borrow(a);
+    if (b.valid()) { logLine("b == null"); }
+    else { logLine("b /= null"); }
+    // logLine("a borrowers: " << a.test());
 
     return 0;
 }
