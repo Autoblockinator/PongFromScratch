@@ -16,6 +16,8 @@
 #include <iostream>
 #define log(text) std::cout << text << std::endl
 
+#include "../src/utils/linked_pointer.cpp"
+
 // namespace utils{
 //     #include "../src/utils/string_utils.cpp"
 // }

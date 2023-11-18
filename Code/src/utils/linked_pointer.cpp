@@ -1,12 +1,12 @@
-#include <iostream>
-#define log(text) std::cout << text
-#define logLine(text) log(text) << std::endl
+#include <string>
+#ifndef String
+#define String std::string
+#endif
 
 #include <vector>
+#ifndef Vector
 #define Vector std::vector
-
-#include <string>
-#define String std::string
+#endif
 
 template <typename T>
 class CustomSmartPointer {
@@ -28,13 +28,6 @@ public:
     CustomSmartPointer<T>& operator=(T* other) { setPtr(other); return *this; }
 
     // CustomSmartPointer<T>& operator=(CustomSmartPointer<T>& other) {
-    //     ptr = other.ptr;
-    //     owner = other.owner;
-        
-    //     targetChanged(nullptr);
-
-
-    //     return *this;
     // }
 
     CustomSmartPointer<T>& operator=(nullptr_t null) { setPtr(nullptr); return *this; }
@@ -57,11 +50,11 @@ public:
         }
     }
 
-    // CustomSmartPointer<T>* getOwner() { return owner; }
+    CustomSmartPointer<T>* getOwner() { return owner; }
 
-    // T* operator->() const { return ptr; }
+    T* operator->() { return ptr; }
 
-    // T& get() const { return *ptr; }
+    T& get() { return *ptr; }
 
     bool operator==(const CustomSmartPointer<T>& other) { return ptr == other.ptr; }
     bool operator==(nullptr_t null) { return !isValid(); }
@@ -95,23 +88,3 @@ protected:
         owner = nullptr;
     }
 };
-
-
-
-class TestClass {
-public:
-    String A;
-    String B;
-
-    TestClass(String a, String b): A(a), B(b) {}
-};
-
-#define CSP CustomSmartPointer
-int main() {
-    TestClass var_a{"Hello ", "World!"};
-    logLine("var_a: " << var_a.A << var_a.B);
-    TestClass var_b{"Hello ", "World!"};
-    logLine("var_b: " << var_b.A << var_b.B);
-
-    return 0;
-}

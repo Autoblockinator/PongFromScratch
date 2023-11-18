@@ -10,9 +10,14 @@ FetchContent_Declare(SFML
     GIT_TAG 2.6.x)
 FetchContent_MakeAvailable(SFML)
 
-file(GLOB_RECURSE SOURCE_FILES "src/*.cpp")
+# file(GLOB_RECURSE SOURCE_FILES "src/*.cpp")
 
-add_executable(Pong ${SOURCE_FILES})
+add_executable(Pong
+#src
+    src/main.cpp
+    #utils
+        src/utils/linked_pointer.cpp
+)
 target_include_directories(Pong PRIVATE hdr)
 target_link_libraries(Pong PRIVATE sfml-graphics)
 target_compile_features(Pong PRIVATE cxx_std_17)

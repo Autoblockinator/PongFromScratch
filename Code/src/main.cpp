@@ -1,6 +1,5 @@
 #include <SFML/Graphics.hpp>
 #include <utils.h>
-#include <node.h>
 
 // class Root: Node
 // {
@@ -11,7 +10,10 @@
 //     }
 // };
 
-int main() { auto root = makeShared<Node>(); return 0; }
+int main() {
+
+    return 0;
+}
 
 // int main()
 // {
