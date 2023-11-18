@@ -15,13 +15,25 @@ public:
 
     CustomSmartPointer(): DEFAULT {}
 
+    CustomSmartPointer(T& ref): DEFAULT { ptr = &ref; }
+
     explicit CustomSmartPointer(T* ptr): DEFAULT { this->ptr = ptr; }
 
-    // CustomSmartPointer(CustomSmartPointer<T>& owner): DEFAULT { borrow(owner); }
+    CustomSmartPointer(CustomSmartPointer<T>& owner): DEFAULT { borrow(owner); }
 
     #undef DEFAULT
 
-    // CustomSmartPointer<T>& operator=(CustomSmartPointer<T>& owner) { borrow(owner); return *this; }
+    T& operator=(T& other) {}
+
+    T* operator=(T* other) {}
+
+    CustomSmartPointer<T>& operator=(CustomSmartPointer<T>& other) {
+        return *this;
+    }
+
+    // CustomSmartPointer<T>& operator=(nullptr_t null) {
+
+    // }
 
     void borrow(CustomSmartPointer<T>& owner) {
         this->owner = &owner;
@@ -29,7 +41,23 @@ public:
         owner.borrowers.push_back(this);
     }
 
-    // ~CustomSmartPointer() {}
+    ~CustomSmartPointer() {
+        logLine("deleted");
+        if (owner != nullptr) {
+            for (int i = 0; i < owner->borrowers.size(); i++) {
+                if (owner->borrowers[i] == this) {
+                    owner->borrowers.erase(owner->borrowers.begin() + i);
+                }
+            }
+        }
+        targetChanged(nullptr);
+    }
+
+    void targetChanged(T* new_target) {
+        logLine("targetChanged()");
+        ptr = new_target;
+        for (int i = 0; i < borrowers.size(); i++) { borrowers[i]->targetChanged(nullptr); }
+    }
 
     CustomSmartPointer<T>* getOwner() { return owner; }
 
@@ -38,9 +66,9 @@ public:
     T& get() const { return *ptr; }
 
     bool operator==(const CustomSmartPointer<T>& other) { return ptr == other.ptr; }
-    bool operator==(nullptr_t null) { return valid(); }
+    bool operator==(nullptr_t null) { return !valid(); }
 
-    bool valid() { return ptr == nullptr; }
+    bool valid() { return ptr != nullptr; }
 
 protected:
     T* ptr;
@@ -60,15 +88,22 @@ public:
 
 
 int main() {
-    TestClass var{"Hello ", "World! "};
+    TestClass var{"Hello ", "World!"};
     logLine("var: " << var.A << var.B);
 
-    CustomSmartPointer a{&var};
-    CustomSmartPointer<TestClass> b;
-    b.borrow(a);
-    if (b.valid()) { logLine("b == null"); }
-    else { logLine("b /= null"); }
-    // logLine("a borrowers: " << a.test());
+    // CustomSmartPointer a{var};
+    // CustomSmartPointer<TestClass> b;
+    // b = a;
 
+    CustomSmartPointer<TestClass> b;
+    {
+        CustomSmartPointer a{&var};
+        b.borrow(a);
+        if (b == nullptr) { logLine("b invalid"); }
+        else { logLine("b: " << b->A << b->B << " " << b.getOwner()); }
+    }
+    if (b == nullptr) { logLine("b invalid"); }
+    else { logLine("b: " << b->A << b->B << " " << b.getOwner()); }
+    
     return 0;
 }

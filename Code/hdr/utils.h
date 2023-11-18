@@ -2,7 +2,6 @@
 
 #include <vector>
 #define Vector std::vector
-#define vectorIterAt(vector, index) std::next(vector.begin(), index)
 
 #include <string>
 #define String std::string
