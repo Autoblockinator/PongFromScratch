@@ -1,16 +1,18 @@
 #include <SFML/Graphics.hpp>
-#include <utils.h>
+#include <utils/all.h>
+#include <node.h>
+#include <window.h>
 
-// class Root: Node
-// {
-// public:
-//     Root(): Node()
-//     {
-//         log("Hello World!");
-//     }
-// };
+class Root: Node {
+public:
+    Root(): Node()
+    {
+        logLine("Root Init");
+    }
+};
 
 int main() {
+    Root root;
 
     return 0;
 }

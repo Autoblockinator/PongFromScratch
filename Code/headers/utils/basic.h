@@ -14,10 +14,5 @@
 #define WeakPtr std::weak_ptr
 
 #include <iostream>
-#define log(text) std::cout << text << std::endl
-
-#include "../src/utils/linked_pointer.cpp"
-
-// namespace utils{
-//     #include "../src/utils/string_utils.cpp"
-// }
+#define log(text) std::cout << text
+#define logLine(text) log(text) << std::endl

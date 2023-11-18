@@ -1,38 +1,30 @@
-#include <string>
-#ifndef String
-#define String std::string
-#endif
-
-#include <vector>
-#ifndef Vector
-#define Vector std::vector
-#endif
+#include <utils/basic.h>
 
 template <typename T>
-class CustomSmartPointer {
+class LinkedPointer {
 public:
-    #define DEFAULT ptr(nullptr), owner(nullptr), borrowers(Vector<CustomSmartPointer<T>*>())
+    #define DEFAULT ptr(nullptr), owner(nullptr), borrowers(Vector<LinkedPointer<T>*>())
 
-    CustomSmartPointer(): DEFAULT {}
+    LinkedPointer(): DEFAULT {}
 
-    CustomSmartPointer(T& ref): DEFAULT { setPtr(&ref); }
+    LinkedPointer(T& ref): DEFAULT { setPtr(&ref); }
 
-    CustomSmartPointer(T* ptr): DEFAULT { setPtr(ptr); }
+    LinkedPointer(T* ptr): DEFAULT { setPtr(ptr); }
 
-    CustomSmartPointer(CustomSmartPointer<T>& owner): DEFAULT { borrow(owner); }
+    LinkedPointer(LinkedPointer<T>& owner): DEFAULT { borrow(owner); }
 
     #undef DEFAULT
 
-    CustomSmartPointer<T>& operator=(T& other) { setPtr(&other); return *this; }
+    LinkedPointer<T>& operator=(T& other) { pointTo(&other); return *this; }
     
-    CustomSmartPointer<T>& operator=(T* other) { setPtr(other); return *this; }
+    LinkedPointer<T>& operator=(T* other) { pointTo(other); return *this; }
 
-    // CustomSmartPointer<T>& operator=(CustomSmartPointer<T>& other) {
+    // LinkedPointer<T>& operator=(LinkedPointer<T>& other) {
     // }
 
-    CustomSmartPointer<T>& operator=(nullptr_t null) { setPtr(nullptr); return *this; }
+    LinkedPointer<T>& operator=(nullptr_t null) { setPtr(nullptr); return *this; }
 
-    void borrow(CustomSmartPointer<T>& owner) { connectOwner(owner); setPtr(owner.ptr); }
+    void borrow(LinkedPointer<T>& owner) { connectOwner(owner); setPtr(owner.ptr); }
 
     void stopBorrowing() { disconnectOwner(); setPtr(nullptr); }
 
@@ -42,7 +34,7 @@ public:
 
     bool hasBorrowers() { return borrowers.size() > 0; }
 
-    ~CustomSmartPointer() {
+    ~LinkedPointer() {
         disconnectOwner();
         for (int i = 0; i < borrowers.size(); i++) {
             borrowers[i]->disconnectOwner();
@@ -50,28 +42,33 @@ public:
         }
     }
 
-    CustomSmartPointer<T>* getOwner() { return owner; }
+    LinkedPointer<T>* getOwner() { return owner; }
 
     T* operator->() { return ptr; }
 
     T& get() { return *ptr; }
 
-    bool operator==(const CustomSmartPointer<T>& other) { return ptr == other.ptr; }
+    void pointTo(T* ptr) {
+        if (isBorrowing()) { becomeOwner(); }
+        setPtr(ptr);
+    }
+
+    bool operator==(const LinkedPointer<T>& other) { return ptr == other.ptr; }
     bool operator==(nullptr_t null) { return !isValid(); }
 
     bool isValid() { return ptr != nullptr; }
 
 protected:
     T* ptr;
-    CustomSmartPointer<T>* owner;
-    Vector<CustomSmartPointer<T>*> borrowers;
+    LinkedPointer<T>* owner;
+    Vector<LinkedPointer<T>*> borrowers;
 
     void setPtr(T* ptr) {
         this->ptr = ptr;
         for (int i = 0; i < borrowers.size(); i++) { borrowers[i]->setPtr(ptr); }
     }
 
-    void connectOwner(CustomSmartPointer<T>& owner) {
+    void connectOwner(LinkedPointer<T>& owner) {
         this->owner = &owner;
         owner.borrowers.push_back(this);
     }
