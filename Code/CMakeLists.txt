@@ -11,7 +11,7 @@ FetchContent_Declare(SFML
 FetchContent_MakeAvailable(SFML)
 
 add_executable(Pong src/Main.cpp)
-target_include_directories(Pong PRIVATE src)
+# target_include_directories(Pong PRIVATE src)
 target_link_libraries(Pong PRIVATE sfml-graphics)
 target_compile_features(Pong PRIVATE cxx_std_17)
 

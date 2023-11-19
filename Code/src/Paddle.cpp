@@ -1,5 +1,6 @@
-#include <utils/all.h>
-#include <physics_object.h>
+#pragma once
+#include "Utils/All.h"
+#include "Physics/All.h"
 
 class Paddle: PhysicsObject {
 public:

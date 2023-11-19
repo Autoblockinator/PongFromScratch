@@ -1,3 +1,4 @@
+#pragma once
 #include "Basic.h"
 
 Vector<String> split(const char* string, const int& string_size, const char* delim, const int& delim_size) {

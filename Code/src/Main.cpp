@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
-#include <Utils/All.h>
-#include <Paddle.h>
+#include "Utils/All.h"
+#include "Paddle.cpp"
 
 int main()
 {
