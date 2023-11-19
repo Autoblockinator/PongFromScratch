@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#define Vector std::vector
 
 #include <string>
 #define String std::string

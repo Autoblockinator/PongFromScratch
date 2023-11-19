@@ -1,8 +1,8 @@
 #pragma once
 #include "Basic.h"
 
-Vector<String> split(const char* string, const int& string_size, const char* delim, const int& delim_size) {
-    Vector<String> out;
+std::vector<String> split(const char* string, const int& string_size, const char* delim, const int& delim_size) {
+    std::vector<String> out;
     String string_buffer;
     int delim_buffer;
 
@@ -23,8 +23,7 @@ Vector<String> split(const char* string, const int& string_size, const char* del
             if (string[i] == delim[0]) {
                 if (delim_size == 1) { flushStringBuffer(); }
                 else { delim_buffer++; }
-            }
-            else { string_buffer.push_back(string[i]); }
+            } else { string_buffer.push_back(string[i]); }
             continue;
         }
         if (string[i] == delim[delim_buffer]) {
@@ -39,5 +38,5 @@ Vector<String> split(const char* string, const int& string_size, const char* del
 
     return out;
 }
-Vector<String> split(const String& string, const char& delim) { return split(string.c_str(), string.size(), &delim, 1); }
-Vector<String> split(const String& string, const String& delim) { return split(string.c_str(), string.size(), delim.c_str(), delim.size()); }
+std::vector<String> split(const String& string, const char& delim) { return split(string.c_str(), string.size(), &delim, 1); }
+std::vector<String> split(const String& string, const String& delim) { return split(string.c_str(), string.size(), delim.c_str(), delim.size()); }

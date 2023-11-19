@@ -4,7 +4,7 @@
 template <typename T>
 class LinkedPointer {
 public:
-    #define DEFAULT ptr(nullptr), owner(nullptr), borrowers(Vector<LinkedPointer<T>*>())
+    #define DEFAULT ptr(nullptr), owner(nullptr), borrowers(std::vector<LinkedPointer<T>*>())
 
     LinkedPointer(): DEFAULT {}
 
@@ -62,7 +62,7 @@ public:
 protected:
     T* ptr;
     LinkedPointer<T>* owner;
-    Vector<LinkedPointer<T>*> borrowers;
+    std::vector<LinkedPointer<T>*> borrowers;
 
     void setPtr(T* ptr) {
         this->ptr = ptr;
