@@ -1,10 +1,9 @@
 #pragma once
 #include "Utils/All.h"
-#include "Interfaces/LogicProcess.cpp"
-#include "Interfaces/PhysicsProcess.cpp"
-#include "Interfaces/RenderProcess.cpp"
+#include "Interfaces.cpp"
 
 class Paddle:
+public
     I_LogicProcess,
     I_PhysicsProcess,
     I_RenderProcess
@@ -12,9 +11,14 @@ class Paddle:
 public:
     Paddle() {}
 
+    bool logicProcess(float &delta) {
+        return true;
+    }
+
     void physicsProcess(float &delta) {}
 
-    // void gameProcess
+    void renderProcess(sf::RenderWindow &window) { window.draw(shape); }
 
 protected:
+    sf::RectangleShape shape{{20,100}};
 };
