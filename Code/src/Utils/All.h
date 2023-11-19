@@ -3,7 +3,7 @@
 #include "Basic.h"
 
 #include "LinkedPointer.cpp"
-namespace string {
-    #include "StringUtils.cpp"
-}
+// namespace str_util {
+//     #include "StringUtils.cpp"
+// }
 #include "Vectors.cpp"

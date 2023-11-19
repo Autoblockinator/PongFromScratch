@@ -3,7 +3,7 @@
 
 class I_LogicProcess {
 public:
-    virtual bool logicProcess(float &delta) = 0;
+    virtual bool logicProcess(sf::Event &ev, float &delta) = 0;
 };
 
 class I_PhysicsProcess {

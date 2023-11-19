@@ -3,14 +3,16 @@
 #include <vector>
 
 #include <string>
-#define String std::string
+using std::string;
+
+#include <cmath>
 
 #include <memory>
-#define UniquePtr std::unique_ptr
-#define makeUnique std::make_unique
-#define SharedPtr std::shared_ptr
-#define makeShared std::make_shared
-#define WeakPtr std::weak_ptr
+using std::unique_ptr;
+using std::make_unique;
+using std::shared_ptr;
+using std::make_shared;
+using std::weak_ptr;
 
 #include <iostream>
 #define log(text) std::cout << text
