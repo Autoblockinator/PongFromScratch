@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
 
 #include "Utils/All.h"
+#include "Node.cpp"
+#include "Window.cpp"
 #include "Interfaces.cpp"
 #include "Collider.cpp"
 #include "Paddle.cpp"

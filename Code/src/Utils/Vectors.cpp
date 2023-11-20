@@ -4,8 +4,7 @@
 template <typename T>
 class Vector {
 public:
-    T x{0};
-    T y{0};
+    T x{0}, y{0};
 
     Vector() {}
 
