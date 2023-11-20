@@ -1,35 +1,36 @@
 #pragma once
 #include <utils/All.hpp>
 #include <Processes.hpp>
+#include <Globals.hpp>
+#include <Controllers.hpp>
 
 class Paddle:
     public I_PhysicsProcess,
     public I_RenderProcess
 {
 public:
-    Paddle(bool player_1);
+    Paddle(bool player_1, bool human = ISHUMAN);
 
     void physicsProcess();
 
     void renderProcess();
 
     Vector<float> getPosition();
-    void setPosition(const Vector<float> &position);
 
     sf::Color getColor();
     void setColor(const sf::Color &color);
 
+    ~Paddle();
+
 protected:
     // Input
-    sf::Keyboard::Key up;
-    sf::Keyboard::Key down;
+    Controller *controller;
 
     //Physics
     Vector<float> position{20, 20};
     float velocity = 0;
-    float acceleration = 0;
-    float speed = 7000;
-    float deaccel_speed = 5000;
+    const float accel_speed = 700;
+    const float deaccel_speed = 1;
 
     // Rendering
     sf::RectangleShape shape{{20,100}};

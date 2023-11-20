@@ -2,6 +2,7 @@
 #include <Processes.hpp>
 #include <Paddle.hpp>
 #include <Ball.hpp>
+#include <Controllers.hpp>
 
 sf::RenderWindow *window;
 
@@ -18,23 +19,16 @@ bool running = true;
 int main() {
     window = new sf::RenderWindow{{1920, 1080}, "Pong"};
 
-    Paddle p1{true};
-    
-    // Paddle p2{false, &window};
-    // physics_pipeline.push_back(&p2);
-    // render_pipeline.push_back(&p2);
-
-    // Ball ball{&window};
-    // physics_pipeline.push_back(&ball);
-    // render_pipeline.push_back(&ball);
+    Paddle p1{ISPLAYER1, ISHUMAN};
+    // Paddle p2{ISPLAYER2, ISAI};
     
     sf::Clock clock{};
-    while (logicProcess() && running) {
+    while ((logicProcess() && running) || (!window->isOpen())) {
         physicsProcess();
         renderProcess();
         delta = clock.restart().asSeconds();
     }
 
-    window->close();
+    if (window->isOpen()) { window->close(); };
     return 0;
 }

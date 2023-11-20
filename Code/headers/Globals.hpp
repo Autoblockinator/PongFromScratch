@@ -2,6 +2,13 @@
 #include <SFML/Graphics.hpp>
 #include <Processes.hpp>
 
+#define ISHUMAN true
+#define ISAI false
+#define ISPLAYER1 true
+#define ISPLAYER2 false
+
+#define SCREENBORDER 20
+
 extern sf::RenderWindow *window;
 
 extern std::vector<I_LogicProcess*> logic_pipeline;

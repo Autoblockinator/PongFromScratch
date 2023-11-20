@@ -3,7 +3,10 @@
 
 bool logicProcess() {
     events.clear();
-    for (sf::Event ev; window->pollEvent(ev);) { events.push_back(ev); }
+    for (sf::Event ev; window->pollEvent(ev);) {
+        if (ev.type == sf::Event::Closed) { return false; }
+        events.push_back(ev);
+    }
     for (auto object: logic_pipeline) { object->logicProcess(); }
     return !sf::Keyboard::isKeyPressed(sf::Keyboard::Escape);
 }

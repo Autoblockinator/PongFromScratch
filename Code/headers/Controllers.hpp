@@ -5,7 +5,7 @@
 
 class Controller {
 public:
-    virtual int process() = 0;
+    virtual float process() = 0;
 };
 
 class PlayerController:
@@ -17,5 +17,5 @@ public:
 
     PlayerController(bool player_1);
 
-    int process();
+    float process();
 };
