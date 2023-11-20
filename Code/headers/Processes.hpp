@@ -4,32 +4,21 @@
 
 class I_LogicProcess {
 public:
-    virtual bool logicProcess(sf::Event &ev, const float &delta) = 0;
+    virtual bool logicProcess() = 0;
 };
 
 class I_PhysicsProcess {
 public:
-    virtual void physicsProcess(std::vector<I_PhysicsProcess*> &others, const float &delta) = 0;
+    virtual void physicsProcess() = 0;
 };
 
 class I_RenderProcess {
 public:
-    virtual void renderProcess(sf::RenderWindow &window, const float &delta) = 0;
+    virtual void renderProcess() = 0;
 };
 
-bool logicProcess(
-    const std::vector<I_LogicProcess*> &pipeline,
-    float &delta,
-    sf::RenderWindow &window
-);
+bool logicProcess();
 
-void physicsProcess(
-    std::vector<I_PhysicsProcess*> &pipeline,
-    float &delta
-);
+void physicsProcess();
 
-void renderProcess(
-    const std::vector<I_RenderProcess*> &pipeline,
-    sf::RenderWindow &window,
-    const float &delta
-);
+void renderProcess();

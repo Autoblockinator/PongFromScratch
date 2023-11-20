@@ -8,15 +8,15 @@ class Ball:
     public I_RenderProcess
 {
 public:
-    Ball(sf::RenderWindow *window);
+    Ball();
 
     void start();
 
     void launch();
 
-    void physicsProcess(std::vector<I_PhysicsProcess*> &others, const float &delta);
+    void physicsProcess();
 
-    void renderProcess(sf::RenderWindow &window, const float &delta);
+    void renderProcess();
 
     void resetPosition();
 
@@ -34,6 +34,5 @@ protected:
 
     // Rendering
     sf::CircleShape shape{10.0f};
-    sf::RenderWindow *window;
 
 };

@@ -1,9 +1,11 @@
 #include <Paddle.hpp>
+#include <Globals.hpp>
 
-Paddle::Paddle(bool player_1, sf::RenderWindow* window) {
-    this->window = window;
+Paddle::Paddle(bool player_1) {
+    physics_pipeline.push_back(this);
+    render_pipeline.push_back(this);
 
-    setColor(color);
+    setColor(sf::Color::White);
 
     if (player_1) {
         up = sf::Keyboard::W;
@@ -24,7 +26,7 @@ Paddle::Paddle(bool player_1, sf::RenderWindow* window) {
     });
 };
 
-void Paddle::physicsProcess(std::vector<I_PhysicsProcess*> &others, const float &delta) {
+void Paddle::physicsProcess() {
     using sf::Keyboard;
     const float border = 20;
     const float min_speed = 5000;
@@ -73,10 +75,9 @@ void Paddle::physicsProcess(std::vector<I_PhysicsProcess*> &others, const float 
     acceleration = 0;
 };
 
-void Paddle::renderProcess(sf::RenderWindow &window, const float &delta) {
-    this->window = &window;
+void Paddle::renderProcess() {
     shape.setPosition({position.x, position.y});
-    window.draw(shape);
+    window->draw(shape);
 };
 
 

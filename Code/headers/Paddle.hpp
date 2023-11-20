@@ -7,15 +7,16 @@ class Paddle:
     public I_RenderProcess
 {
 public:
-    Paddle(bool player_1, sf::RenderWindow* window);
+    Paddle(bool player_1);
 
-    void physicsProcess(std::vector<I_PhysicsProcess*> &others, const float &delta);
+    void physicsProcess();
 
-    void renderProcess(sf::RenderWindow &window, const float &delta);
+    void renderProcess();
 
     Vector<float> getPosition();
     void setPosition(const Vector<float> &position);
 
+    sf::Color getColor();
     void setColor(const sf::Color &color);
 
 protected:
@@ -32,7 +33,5 @@ protected:
 
     // Rendering
     sf::RectangleShape shape{{20,100}};
-    sf::Color color{sf::Color::White};
-    sf::RenderWindow* window;
 
 };

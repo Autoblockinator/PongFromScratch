@@ -1,36 +1,21 @@
 #include <Processes.hpp>
+#include <Globals.hpp>
 
-bool logicProcess(
-    const std::vector<I_LogicProcess*> &pipeline,
-    float &delta,
-    sf::RenderWindow &window
-) {
-    std::vector<sf::Event> ev_list{};
-    for (sf::Event ev; window.pollEvent(ev);) {
-        if (ev.type == sf::Event::Closed) { return false; }
-        ev_list.push_back(ev);
-    }
-    for (auto object: pipeline) {
-        for (auto ev: ev_list) { object->logicProcess(ev, delta); }
-    }
+bool logicProcess() {
+    events.clear();
+    for (sf::Event ev; window->pollEvent(ev);) { events.push_back(ev); }
+    for (auto object: logic_pipeline) { object->logicProcess(); }
     return !sf::Keyboard::isKeyPressed(sf::Keyboard::Escape);
 }
 
-void physicsProcess(
-    std::vector<I_PhysicsProcess*> &pipeline,
-    float &delta
-) {
-    for (const auto object: pipeline) { object->physicsProcess(pipeline, delta); }
+void physicsProcess() {
+    for (auto object: physics_pipeline) { object->physicsProcess(); }
 }
 
-void renderProcess(
-    const std::vector<I_RenderProcess*> &pipeline,
-    sf::RenderWindow &window,
-    const float &delta
-) {
-    window.clear(sf::Color::Black);
+void renderProcess() {
+    window->clear(sf::Color::Black);
 
-    for (const auto object: pipeline) { object->renderProcess(window, delta); }
+    for (auto object: render_pipeline) { object->renderProcess(); }
 
-    window.display();
+    window->display();
 }

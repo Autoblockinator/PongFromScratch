@@ -1,6 +1,7 @@
 #include <Ball.hpp>
+#include <Globals.hpp>
 
-Ball::Ball(sf::RenderWindow *window): window(window) { start(); }
+Ball::Ball() { start(); }
 
 void Ball::start() {
     resetPosition();
@@ -14,13 +15,13 @@ void Ball::launch() {
     // velocity = {(float)rand(), 9};
 }
 
-void Ball::physicsProcess(std::vector<I_PhysicsProcess*> &others, const float &delta) {}
+void Ball::physicsProcess() {}
 
-void Ball::renderProcess(sf::RenderWindow &window, const float &delta) {
+void Ball::renderProcess() {
     if (launch_waiting && (launch_delay_timer.getElapsedTime().asSeconds() > 1.0f)) { launch(); }
 
     shape.setPosition({position.x, position.y});
-    window.draw(shape);
+    window->draw(shape);
 }
 
 void Ball::resetPosition() {
