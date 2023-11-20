@@ -1,9 +1,9 @@
-#pragma once
-#include "Basic.h"
+#include <utils/Basic.hpp>
+#include <utils/StringUtils.hpp>
 
-std::vector<string> split(const char* string, const int& string_size, const char* delim, const int& delim_size) {
-    std::vector<string> out;
-    string string_buffer;
+std::vector<string> str_util::split(const char* string, const int& string_size, const char* delim, const int& delim_size) {
+    std::vector<std::string> out;
+    std::string string_buffer;
     int delim_buffer;
 
     auto flushDelimBuffer = [&string_buffer, &delim_buffer, delim]() -> void {
@@ -38,5 +38,5 @@ std::vector<string> split(const char* string, const int& string_size, const char
 
     return out;
 }
-std::vector<string> split(const string& string, const char& delim) { return split(string.c_str(), string.size(), &delim, 1); }
-std::vector<string> split(const string& string, const string& delim) { return split(string.c_str(), string.size(), delim.c_str(), delim.size()); }
+std::vector<string> str_util::split(const string& string, const char& delim) { return split(string.c_str(), string.size(), &delim, 1); }
+std::vector<string> str_util::split(const string& string, const std::string& delim) { return split(string.c_str(), string.size(), delim.c_str(), delim.size()); }

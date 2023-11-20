@@ -1,42 +1,6 @@
-#include <SFML/Graphics.hpp>
-
-#include "Utils/All.h"
-#include "Interfaces.cpp"
-#include "Collider.cpp"
-#include "Paddle.cpp"
-#include "Ball.cpp"
-
-bool logicProcess(
-    const std::vector<I_LogicProcess*> &pipeline,
-    float &delta,
-    sf::RenderWindow &window
-) {
-    // for (const auto object: pipeline) {
-        for (sf::Event ev; window.pollEvent(ev);) {
-            if (ev.type == sf::Event::Closed) { return false; }
-            // if (!object->logicProcess(ev, delta)) { return false; }
-        }
-    // }
-    return !sf::Keyboard::isKeyPressed(sf::Keyboard::Escape);
-}
-
-void physicsProcess(
-    const std::vector<I_PhysicsProcess*> &pipeline,
-    float &delta
-) {
-    for (const auto object: pipeline) { object->physicsProcess(delta); }
-}
-
-void renderProcess(
-    const std::vector<I_RenderProcess*> &pipeline,
-    sf::RenderWindow &window
-) {
-    window.clear(sf::Color::Black);
-
-    for (const auto object: pipeline) { object->renderProcess(window); }
-
-    window.display();
-}
+#include <Processes.hpp>
+#include <Paddle.hpp>
+#include <Ball.hpp>
 
 int main() {
     sf::RenderWindow window{{1920, 1080}, "Pong"};
@@ -46,7 +10,6 @@ int main() {
     std::vector<I_LogicProcess*> logic_pipeline{};
     std::vector<I_PhysicsProcess*> physics_pipeline{};
     std::vector<I_RenderProcess*> render_pipeline{};
-    std::vector<Collider*> colliders{};
 
     Paddle p1{true, &window};
     physics_pipeline.push_back(&p1);
@@ -68,7 +31,7 @@ int main() {
         //
 
         physicsProcess(physics_pipeline, delta);
-        renderProcess(render_pipeline, window);
+        renderProcess(render_pipeline, window, delta);
     }
 
     window.close();

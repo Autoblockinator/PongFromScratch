@@ -1,51 +1,32 @@
-#pragma once
-#include "Utils/All.h"
-#include "Interfaces.cpp"
+#include <Ball.hpp>
 
-class Ball:
-    public I_PhysicsProcess,
-    public I_RenderProcess
-{
-public:
-    Ball(sf::RenderWindow *window) {
-        this->window = window;
-        start();
-    }
+Ball::Ball(sf::RenderWindow *window): window(window) { start(); }
 
-    void start() {
-        resetPosition();
-        launch_delay_timer.restart();
-        launch_waiting = true;
-    }
+void Ball::start() {
+    resetPosition();
+    launch_delay_timer.restart();
+    launch_waiting = true;
+}
 
-    void launch() {
-        launch_waiting = false;
-    }
+void Ball::launch() {
+    launch_waiting = false;
+    shape.setFillColor(sf::Color::Red);
+    // velocity = {(float)rand(), 9};
+}
 
-    void physicsProcess(float &delta) {}
+void Ball::physicsProcess(std::vector<I_PhysicsProcess*> &others, const float &delta) {}
 
-    void renderProcess(sf::RenderWindow &window) {
-        if (launch_waiting && (launch_delay_timer.getElapsedTime().asSeconds() > 1.0f)) { launch(); }
+void Ball::renderProcess(sf::RenderWindow &window, const float &delta) {
+    if (launch_waiting && (launch_delay_timer.getElapsedTime().asSeconds() > 1.0f)) { launch(); }
 
-        shape.setPosition({position.x, position.y});
-        window.draw(shape);
-    }
+    shape.setPosition({position.x, position.y});
+    window.draw(shape);
+}
 
-    void resetPosition() {
-        position.x = window->getSize().x / 2.0f;
-        position.y = window->getSize().y / 2.0f;
-    }
+void Ball::resetPosition() {
+    position.x = window->getSize().x / 2.0f;
+    position.y = window->getSize().y / 2.0f;
+}
 
-protected:
-    // Physics
-    Vector<float> position{};
-    Vector<float> velocity{};
-
-    // Timing
-    sf::Clock launch_delay_timer{};
-    bool launch_waiting = false;
-
-    // Rendering
-    sf::CircleShape shape{10.0f};
-    sf::RenderWindow *window;
-};
+sf::Color Ball::getColor() { return shape.getFillColor(); }
+void Ball::setColor(sf::Color &color) { shape.setFillColor(color); }
