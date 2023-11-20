@@ -1,8 +1,6 @@
 #include <SFML/Graphics.hpp>
 
 #include "Utils/All.h"
-#include "Node.cpp"
-#include "Window.cpp"
 #include "Interfaces.cpp"
 #include "Collider.cpp"
 #include "Paddle.cpp"
@@ -35,7 +33,7 @@ void renderProcess(
 ) {
     window.clear(sf::Color::Black);
 
-    for (const auto drawable: pipeline) { drawable->renderProcess(window); }
+    for (const auto object: pipeline) { object->renderProcess(window); }
 
     window.display();
 }
@@ -50,13 +48,13 @@ int main() {
     std::vector<I_RenderProcess*> render_pipeline{};
     std::vector<Collider*> colliders{};
 
-    Paddle player_1{true, &window};
-    physics_pipeline.push_back(&player_1);
-    render_pipeline.push_back(&player_1);
+    Paddle p1{true, &window};
+    physics_pipeline.push_back(&p1);
+    render_pipeline.push_back(&p1);
     
-    Paddle player_2{false, &window};
-    physics_pipeline.push_back(&player_2);
-    render_pipeline.push_back(&player_2);
+    Paddle p2{false, &window};
+    physics_pipeline.push_back(&p2);
+    render_pipeline.push_back(&p2);
 
     Ball ball{&window};
     physics_pipeline.push_back(&ball);
