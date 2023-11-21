@@ -1,4 +1,0 @@
-#!/usr/bin/python
-from os import system as sh
-if sh('g++ experiments/test.cpp -o experiments/run') == 0:
-    sh('experiments/run')

@@ -26,7 +26,14 @@ int main() {
     p1 = new Paddle{ISPLAYER1, ISHUMAN};
     p2 = new Paddle{ISPLAYER2, ISAI};
     ball = new Ball{};
-    
+
+    {
+        using namespace vector;
+        vec<2,float> test{0,1};
+
+        
+    }
+
     sf::Clock clock{};
     while ((logicProcess() && running) || (!window->isOpen())) {
         physicsProcess();

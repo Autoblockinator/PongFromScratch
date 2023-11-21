@@ -1,0 +1,4 @@
+#!/usr/bin/python
+from os import system as sh
+sh('clear')
+if sh('g++ tests/test.cpp -o tests/run') == 0: sh('tests/run')
