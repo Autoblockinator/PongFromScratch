@@ -21,12 +21,13 @@ public:
     void setHidden(bool hidden);
 
     sf::Color getColor();
-    void setColor(sf::Color &color);
+    void setColor(const sf::Color &color);
 
 protected:
     // Physics
-    sf::Vector2f position{};
-    sf::Vector2f velocity{};
+    vec2<float> position{};
+    vec2<float> velocity{};
+    int test = 0;
 
     // Timing
     sf::Clock launch_delay_timer{};

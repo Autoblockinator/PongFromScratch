@@ -9,6 +9,10 @@ Ball::Ball() {
 }
 
 void Ball::start() {
+    velocity = 0;
+    test += 10;
+    if (test == 360) { test = 0; }
+
     position.x = window->getSize().x / 2.0f;
     position.y = window->getSize().y / 2.0f;
 
@@ -18,19 +22,25 @@ void Ball::start() {
 
 void Ball::launch() {
     launch_waiting = false;
-    shape.setFillColor(sf::Color::Red);
-    velocity = {
-        (float)rng(-100, 100) / 100.0f,
-        (float)rng(-100, 100) / 100.0f
-    };
+    setColor(sf::Color::Red);
+    
+    velocity = vec2<float>::RIGHT * 500.0f;
+    velocity.rotate(DEG2RAD(test));
+    // velocity.rotate(DEG2RAD(rng(0,360)));
 }
 
 void Ball::physicsProcess() {
     if (launch_waiting && (launch_delay_timer.getElapsedTime().asSeconds() > 1.0f)) { launch(); }
 
-    sf::Vector2f new_pos = position + (velocity * delta);
+    vec2<float> new_pos = position + (velocity * delta);
 
-    position = new_pos;
+    if (
+        ((new_pos.x + shape.getSize().x) >= (window->getSize().x - SCREENBORDER)) || (new_pos.x <= SCREENBORDER)
+        ||
+        ((new_pos.y + shape.getSize().y) >= (window->getSize().y - SCREENBORDER)) || (new_pos.y <= SCREENBORDER)
+    ) { start(); }
+
+    else {position = new_pos;}
 }
 
 void Ball::renderProcess() {
@@ -41,4 +51,4 @@ void Ball::renderProcess() {
 void Ball::setHidden(bool hidden) { }
 
 sf::Color Ball::getColor() { return shape.getFillColor(); }
-void Ball::setColor(sf::Color &color) { shape.setFillColor(color); }
+void Ball::setColor(const sf::Color &color) { shape.setFillColor(color); }

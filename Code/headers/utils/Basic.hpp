@@ -7,6 +7,8 @@ using std::string;
 
 #include <cmath>
 #define rng(from, to) (from + (rand() % ((to - from) + 1)))
+#define DEG2RAD(degrees) (degrees * ((float)M_PI / 180.0f))
+#define RAD2DEG(radians) (radians * (180.0f / (float)M_PI))
 
 #include <memory>
 using std::unique_ptr;

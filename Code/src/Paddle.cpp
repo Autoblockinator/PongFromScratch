@@ -59,7 +59,7 @@ void Paddle::renderProcess() {
     window->draw(shape);
 }
 
-sf::Vector2f Paddle::getPosition() { return position; };
+vec2<float> Paddle::getPosition() { return position; };
 
 void Paddle::setColor(const sf::Color &color) { shape.setFillColor(color); };
 

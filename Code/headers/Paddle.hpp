@@ -14,7 +14,7 @@ public:
 
     void renderProcess();
 
-    sf::Vector2f getPosition();
+    vec2<float> getPosition();
 
     float getVelocity();
 
@@ -28,7 +28,7 @@ protected:
     Controller *controller;
 
     //Physics
-    sf::Vector2f position{20, 20};
+    vec2<float> position{20, 20};
     float velocity = 0;
     const float accel_speed = 2000;
     const float deaccel_speed = 500;
