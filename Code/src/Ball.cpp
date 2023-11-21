@@ -52,7 +52,7 @@ void Ball::physicsProcess() {
         if (new_pos.x > ((float)window->getSize().x / 2.0f)) { player = p2; }
 
         float diff = new_pos.y - player->position.y;
-        if ((diff >= -shape.getSize().y) || (diff <= player->shape.getSize().y)) {
+        if ((diff >= -shape.getSize().y) && (diff <= player->shape.getSize().y)) {
             // Set x position.
             if (player == p1) { new_pos.x = player->position.x + player->shape.getSize().x; }
             else { new_pos.x = player->position.x - shape.getSize().x; }
@@ -69,13 +69,13 @@ void Ball::physicsProcess() {
 
             // Set y velocity.
             velocity.y += transfer * velocity.x;
+        } else {
+            // Score.
+            if (((new_pos.x + shape.getSize().x) >= (window->getSize().x - SCREENBORDER)) || (new_pos.x <= SCREENBORDER)) {
+                start();
+                return;
+            }
         }
-    }
-
-    // Score.
-    if (((new_pos.x + shape.getSize().x) >= (window->getSize().x - SCREENBORDER)) || (new_pos.x <= SCREENBORDER)) {
-        start();
-        return;
     }
 
     position = new_pos;

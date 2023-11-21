@@ -13,7 +13,7 @@ class Map(dict):
     
     def __getattr__(self, name):
         if name in self: return self[name]
-        else: return super().__getattr__(name)
+        else: return super().__getattribute__(name)
     
     def __setattr__(self, name, value): self[name] = value
     
@@ -21,16 +21,17 @@ class Map(dict):
     
     pass
 
-def pmap(inmap: Map, indent= 0, max_depth= -1):
+def pmap(inmap: Map, max_depth= -1, hide = [],  _indent= 0, _path = ''):
     out = ''
     for k,v in inmap.items():
-        out += f'{"  " * indent}{k}: '
+        if _path+'.'+k in hide: continue
+        out += f'{"  " * _indent}{k}: '
         if isinstance(v, Map):
-            if indent == max_depth: out += '...'
-            else: out += '\n'+pmap(v, indent + 1, max_depth)
+            if _indent == max_depth: out += '{...}'
+            else: out += '\n'+pmap(v, max_depth, hide,  _indent + 1, _path+'.'+k)
         else: out += str(v)
         if out[-1] != '\n': out += '\n'
-    if indent == 0: print(out, end='')
+    if _indent == 0: print(out, end='')
     else: return out
 
 def map2dict(inmap: Map) -> dict:
@@ -63,15 +64,23 @@ def loadmap(inmap: Map, path: str):
 
 
 
-mem = Map(methods= Map())
+mem = Map(func= Map(), settings= Map(default_hides = ['.func', '.settings']))
 
-def pmem(max_depth= -1): pmap(mem, max_depth= max_depth)
+def pmem(max_depth= -1, hide= mem.settings.default_hides): pmap(mem, max_depth, hide)
 
-def cls(): clear(); pmem()
+def cls(max_depth= -1, hide= mem.settings.default_hides): clear(); pmem(max_depth, hide)
 
-def dumpmem(): dumpmap(mem, 'pymem')
+def save(): dumpmap(mem, 'pymem')
 
-def loadmem(): loadmap(mem, 'pymem')
+def load(): loadmap(mem, 'pymem')
 
-try: loadmem()
+
+
+def leave(code= 0): save(); exit()
+
+
+
+try: load()
 except FileNotFoundError: print('Previous session memory not found. mem = Map()')
+
+cls()
