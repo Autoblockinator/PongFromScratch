@@ -16,11 +16,16 @@ std::vector<sf::Event> events{};
 
 bool running = true;
 
+Paddle *p1;
+Paddle *p2;
+Ball *ball;
+
 int main() {
     window = new sf::RenderWindow{{1920, 1080}, "Pong"};
 
-    Paddle p1{ISPLAYER1, ISHUMAN};
-    // Paddle p2{ISPLAYER2, ISAI};
+    p1 = new Paddle{ISPLAYER1, ISHUMAN};
+    p2 = new Paddle{ISPLAYER2, ISAI};
+    ball = new Ball{};
     
     sf::Clock clock{};
     while ((logicProcess() && running) || (!window->isOpen())) {

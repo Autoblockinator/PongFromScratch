@@ -7,30 +7,50 @@ Paddle::Paddle(bool player_1, bool human) {
     render_pipeline.push_back(this);
 
     if (human == ISHUMAN) { controller = new PlayerController(player_1); }
-    // else { } //Ai Controller
+    else { controller = new AIController(player_1); }
 
     setColor(sf::Color::White);
 
-    if (player_1) { position.x = 20; }
-    else { position.x = window->getSize().x - 40; }
+    if (player_1) { position.x = SCREENBORDER; }
+    else { position.x = window->getSize().x - SCREENBORDER - shape.getSize().x; }
 
     position.y = ((float)window->getSize().y / 2.0f) - ((float)shape.getSize().y / 2.0f);
 }
 
 void Paddle::physicsProcess() {
-    const float border = 20;
-    const float min_speed = 5000;
-
     float acceleration = controller->process() * accel_speed;
 
-    velocity += acceleration * delta;
+    // Add acceleration.
+    if (std::abs(acceleration) > 0.0f) {
+        bool accpos = acceleration > 0;
+        bool velpos = velocity > 0;
+        if (accpos == velpos) { velocity += acceleration * delta; }
+        else { velocity += acceleration * turning_boost * delta; }
+    } else {
+        if (std::abs(velocity) > stopping_speed) {
+            if (velocity > 0) { velocity -= deaccel_speed * delta; }
+            else { velocity += deaccel_speed * delta; }
+        } else { velocity = 0; }
+    }
 
+    // Set virtual position
     float new_pos = position.y + (velocity * delta);
 
-    logLine("acc: " << acceleration);
-    logLine("vel: " << velocity);
-    logLine("pos: " << position.y);
+    // Bounce off screen border.
+    if ((new_pos + shape.getSize().y) >= (window->getSize().y - SCREENBORDER)) {
+        new_pos = window->getSize().y - SCREENBORDER - shape.getSize().y;
+        velocity *= -wall_bounciness;
+    } else { if (new_pos <= SCREENBORDER) {
+        new_pos = SCREENBORDER;
+        velocity *= -wall_bounciness;
+    }}
 
+    // Logging
+    // logLine("acc: " << acceleration);
+    // logLine("vel: " << velocity);
+    // logLine("pos: " << position.y);
+
+    // Finalize
     position.y = new_pos;
 }
 
@@ -39,8 +59,10 @@ void Paddle::renderProcess() {
     window->draw(shape);
 }
 
-Vector<float> Paddle::getPosition() { return position; };
+sf::Vector2f Paddle::getPosition() { return position; };
 
 void Paddle::setColor(const sf::Color &color) { shape.setFillColor(color); };
 
 Paddle::~Paddle() { delete controller; }
+
+float Paddle::getVelocity() { return velocity; }

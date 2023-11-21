@@ -6,6 +6,7 @@
 using std::string;
 
 #include <cmath>
+#define rng(from, to) (from + (rand() % ((to - from) + 1)))
 
 #include <memory>
 using std::unique_ptr;

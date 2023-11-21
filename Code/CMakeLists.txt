@@ -27,6 +27,7 @@ add_executable(Pong
     src/Main.cpp
     src/Processes.cpp
     src/PlayerController.cpp
+    src/AIController.cpp
     src/Paddle.cpp
     src/Ball.cpp
         #utils

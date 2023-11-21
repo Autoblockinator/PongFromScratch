@@ -18,21 +18,21 @@ public:
 
     void renderProcess();
 
-    void resetPosition();
+    void setHidden(bool hidden);
 
     sf::Color getColor();
     void setColor(sf::Color &color);
 
 protected:
     // Physics
-    Vector<float> position{};
-    Vector<float> velocity{};
+    sf::Vector2f position{};
+    sf::Vector2f velocity{};
 
     // Timing
     sf::Clock launch_delay_timer{};
     bool launch_waiting = false;
 
     // Rendering
-    sf::CircleShape shape{10.0f};
+    sf::RectangleShape shape{{20,20}};
 
 };

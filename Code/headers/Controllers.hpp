@@ -19,3 +19,17 @@ public:
 
     float process();
 };
+
+class AIController:
+    public Controller
+{
+public:
+    bool player_1 = false;
+    float waiting = 0;
+    sf::Clock timer{};
+    float output = 0;
+
+    AIController(bool player_1);
+
+    float process();
+};
