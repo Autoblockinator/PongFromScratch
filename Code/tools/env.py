@@ -21,12 +21,17 @@ class Map(dict):
     
     pass
 
-def pmap(inmap: Map, indent = 0):
+def pmap(inmap: Map, indent= 0, max_depth= -1):
+    out = ''
     for k,v in inmap.items():
-        print(f'{"  " * indent}{k}: ', end= '')
-        if isinstance(v, Map): print(); pmap(v, indent + 1)
-        else: print(v)
-    return
+        out += f'{"  " * indent}{k}: '
+        if isinstance(v, Map):
+            if indent == max_depth: out += '...'
+            else: out += '\n'+pmap(v, indent + 1, max_depth)
+        else: out += str(v)
+        if out[-1] != '\n': out += '\n'
+    if indent == 0: print(out, end='')
+    else: return out
 
 def map2dict(inmap: Map) -> dict:
     out = {}
@@ -60,7 +65,7 @@ def loadmap(inmap: Map, path: str):
 
 mem = Map(methods= Map())
 
-def pmem(): pmap(mem)
+def pmem(max_depth= -1): pmap(mem, max_depth= max_depth)
 
 def cls(): clear(); pmem()
 
@@ -68,3 +73,5 @@ def dumpmem(): dumpmap(mem, 'pymem')
 
 def loadmem(): loadmap(mem, 'pymem')
 
+try: loadmem()
+except FileNotFoundError: print('Previous session memory not found. mem = Map()')
