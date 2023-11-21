@@ -1,5 +1,5 @@
-#include "../headers/utils/Vectors.hpp"
-#include "../headers/utils/Basic.hpp"
+#include <utils/Vectors.hpp>
+#include <utils/Basic.hpp>
 
 int main() {
 

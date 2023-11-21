@@ -14,16 +14,12 @@ public:
 
     void renderProcess();
 
-    vec2<float> getPosition();
-
-    float getVelocity();
-
     sf::Color getColor();
     void setColor(const sf::Color &color);
 
     ~Paddle();
 
-protected:
+    // Variables
     // Input
     Controller *controller;
 

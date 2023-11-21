@@ -9,6 +9,7 @@ using std::string;
 #define rng(from, to) (from + (rand() % ((to - from) + 1)))
 #define DEG2RAD(degrees) (degrees * ((float)M_PI / 180.0f))
 #define RAD2DEG(radians) (radians * (180.0f / (float)M_PI))
+#define LERP(from, point, to) (point * (to - from) + from)
 
 #include <memory>
 using std::unique_ptr;

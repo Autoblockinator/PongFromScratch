@@ -23,11 +23,10 @@ public:
     sf::Color getColor();
     void setColor(const sf::Color &color);
 
-protected:
+    // Variables
     // Physics
     vec2<float> position{};
     vec2<float> velocity{};
-    int test = 0;
 
     // Timing
     sf::Clock launch_delay_timer{};
@@ -35,5 +34,11 @@ protected:
 
     // Rendering
     sf::RectangleShape shape{{20,20}};
+
+    // Constants
+    // Physics
+    //Multiplier, how much the x vel should
+    //be transfered to y vel when hitting a paddle at most.
+    const float vel_transfer_max = 0.5;
 
 };

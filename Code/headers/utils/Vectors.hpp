@@ -49,17 +49,19 @@ struct vec2 {
     static float dot(const vec2<T> &vec_a, const vec2<T> &vec_b) { return (vec_a.x * vec_b.x) + (vec_a.y * vec_b.y); }
 
     // Rotate
-    void rotate(const float &rad_angle) {
+    void rotate(const float &rad_angle)  {
         float cos = std::cos(rad_angle);
         float sin = std::sin(rad_angle);
         float x_prime = (x * cos) - (y * sin);
-        float y_prime = (y * sin) + (x * cos);
+        float y_prime = (x * sin) + (y * cos);
         x = x_prime;
         y = y_prime;
     }
-    static vec2<T> rotate(const vec2<T> &vector, const float &radians) {
-        auto x_prime = vector.x * std::cos(radians) - vector.y * std::sin(radians);
-        auto y_prime = vector.y * std::sin(radians) + vector.x * std::cos(radians);
+    static vec2<T> rotate(const vec2<T> &vector, const float &rad_angle) {
+        float cos = std::cos(rad_angle);
+        float sin = std::sin(rad_angle);
+        float x_prime = (vector.x * cos) - (vector.y * sin);
+        float y_prime = (vector.x * sin) + (vector.y * cos);
         return vec2<T>{x_prime, y_prime};
     }
 

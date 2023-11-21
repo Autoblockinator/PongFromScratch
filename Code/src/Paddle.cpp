@@ -59,10 +59,6 @@ void Paddle::renderProcess() {
     window->draw(shape);
 }
 
-vec2<float> Paddle::getPosition() { return position; };
-
 void Paddle::setColor(const sf::Color &color) { shape.setFillColor(color); };
 
 Paddle::~Paddle() { delete controller; }
-
-float Paddle::getVelocity() { return velocity; }

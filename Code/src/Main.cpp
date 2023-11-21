@@ -27,21 +27,10 @@ int main() {
     p1 = new Paddle{ISPLAYER1, ISHUMAN};
     p2 = new Paddle{ISPLAYER2, ISAI};
 
-    sf::Vertex line[] = {
-        sf::Vertex{{window->getSize().x / 2.0f, window->getSize().y / 2.0f}},
-        sf::Vertex{{window->getSize().x / 2.0f, window->getSize().y / 2.0f}}
-    };
-    line[1].position.x += 100;
-
     sf::Clock clock{};
-    while ((logicProcess() && running) || (!window->isOpen())) {
+    while (logicProcess() && running && window->isOpen()) {
         physicsProcess();
-        vec2<float> vector = {line[1].position.x, line[1].position.y};
-        vector.rotate(DEG2RAD(10));
-        line[1].position = {vector.x, vector.y};
         renderProcess();
-        window->draw(line, 2, sf::Lines);
-        window->display();
         delta = clock.restart().asSeconds();
     }
 

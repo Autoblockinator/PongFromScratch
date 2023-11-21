@@ -37,6 +37,15 @@ target_include_directories(Pong PRIVATE headers)
 target_link_libraries(Pong PRIVATE sfml-graphics)
 target_compile_features(Pong PRIVATE cxx_std_17)
 
+add_executable(Test
+tests/test.cpp
+
+#Testing Main Files
+headers/utils/Vectors.hpp
+headers/utils/Basic.hpp
+)
+target_include_directories(Test PRIVATE headers)
+
 # if(WIN32)
 #     add_custom_command(
 #         TARGET Pong
