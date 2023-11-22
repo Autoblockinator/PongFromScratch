@@ -20,6 +20,7 @@ void Ball::start() {
 
 void Ball::launch() {
     launch_waiting = false;
+    // velocity = vec2<float>::LEFT * 1000.0f;
     velocity = vec2<float>::UP * 1000.0f;
     if (rng(0,1) == 1) { velocity.rotate(DEG2RAD(rng(90, 180) - 45)); }
     else { velocity.rotate(DEG2RAD(rng(-90, -180) + 45)); }
@@ -36,7 +37,13 @@ void Ball::physicsProcess() {
         if ((new_pos.y <= SCREENBORDER) || hit_bottom) {
             if (!hit_bottom) { new_pos.y = SCREENBORDER; }
             else { new_pos.y = window->getSize().y - SCREENBORDER - shape.getSize().y; }
-            velocity.y *= -1;
+            
+            const float move = 0.25f;
+
+            if (velocity.x > 0) { velocity.x += velocity.y * move; }
+            else { velocity.x -= velocity.y * move; }
+
+            velocity.y *= -(1.0f - move);
 
             // vec2<float> vel = {0, std::max(velocity.y, 0.0f)};
             // if () {}
@@ -64,11 +71,14 @@ void Ball::physicsProcess() {
                 vel_transfer_max
             );
 
+            //Take some velocity
+            float to_transfer = std::abs(velocity.x) * transfer;
+
             // Reflect the x velocity and take some for the y.
-            velocity.x *= 1.0f - std::abs(transfer) * -1.0f;
+            velocity.x = (velocity.x * -1.0f) * (1.0f - std::abs(transfer));
 
             // Set y velocity.
-            velocity.y += transfer * velocity.x;
+            velocity.y += to_transfer;
         } else {
             // Score.
             if (((new_pos.x + shape.getSize().x) >= (window->getSize().x - SCREENBORDER)) || (new_pos.x <= SCREENBORDER)) {

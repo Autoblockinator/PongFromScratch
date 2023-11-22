@@ -25,7 +25,7 @@ int main() {
 
     ball = new Ball{};
     p1 = new Paddle{ISPLAYER1, ISHUMAN};
-    p2 = new Paddle{ISPLAYER2, ISAI};
+    p2 = new Paddle{ISPLAYER2, ISHUMAN};
 
     sf::Clock clock{};
     while (logicProcess() && running && window->isOpen()) {

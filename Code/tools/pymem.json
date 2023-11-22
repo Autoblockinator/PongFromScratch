@@ -1,0 +1,46 @@
+{
+	"func": {
+		"lerp": "((mem.diff + mem.ball.size) / (mem.player.size + mem.ball.size) * (mem.transmax - -mem.transmax) + -mem.transmax)",
+		"cpp": {
+			"lerp": "((diff + shape.getSize().y) / (player->shape.getSize().y + shape.getSize().y) * (vel_transfer_max - -vel_transfer_max) + -vel_transfer_max)"
+		},
+		"reflect": "(mem.ball.vel.x * -1.0) * (1.0 - abs(mem.transfer))",
+		"evals": {
+			"reflect": -1303.3663058434308
+		}
+	},
+	"settings": {
+		"hide": [
+			".settings",
+			".func.cpp",
+			".func.evals"
+		]
+	},
+	"ball": {
+		"pos": {
+			"x": 40,
+			"y": 566.468628
+		},
+		"size": {
+			"x": 20,
+			"y": 20
+		},
+		"vel": {
+			"x": -999.58667,
+			"y": 28.7503223
+		}
+	},
+	"diff": 76.4649658,
+	"transmax": 0.5,
+	"transfer": 0.303905249,
+	"paddle": {
+		"pos": {
+			"x": 20.0,
+			"y": 490.0
+		},
+		"size": {
+			"x": 20,
+			"y": 100
+		}
+	}
+}

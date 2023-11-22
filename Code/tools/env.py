@@ -60,21 +60,23 @@ def dumpmap(inmap: Map, path: str):
 
 def loadmap(inmap: Map, path: str):
     with open(path+'.json', 'r') as file:
+        inmap.clear()
         for k,v in dict2map(dict(json.load(file))).items(): inmap[k] = deepcopy(v)
 
 
 
-mem = Map(func= Map(), settings= Map(default_hides = ['.func', '.settings']))
+mem = Map(func= Map(), settings= Map(hide = ['.settings', '.func']))
 
-def pmem(max_depth= -1, hide= mem.settings.default_hides): pmap(mem, max_depth, hide)
+def pmem(max_depth= -1, hide= 'defaults'):
+    if hide == 'defaults': pmap(mem, max_depth, mem.get('settings',{}).get('hide',[])); return
+    if isinstance(hide, list): pmap(mem, max_depth, hide); return
+    pmap(mem, max_depth)
 
-def cls(max_depth= -1, hide= mem.settings.default_hides): clear(); pmem(max_depth, hide)
+def cls(max_depth= -1, hide= 'defaults'): clear(); pmem(max_depth, hide)
 
-def save(): dumpmap(mem, 'pymem')
+def save(): dumpmap(mem, 'Code/tools/pymem')
 
-def load(): loadmap(mem, 'pymem')
-
-
+def load(): loadmap(mem, 'Code/tools/pymem')
 
 def leave(code= 0): save(); exit()
 

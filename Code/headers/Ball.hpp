@@ -39,6 +39,6 @@ public:
     // Physics
     //Multiplier, how much the x vel should
     //be transfered to y vel when hitting a paddle at most.
-    const float vel_transfer_max = 0.5;
+    const float vel_transfer_max = 1;
 
 };
